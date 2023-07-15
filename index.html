@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OptiNote</title>
+    <link rel="stylesheet" href="index.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="main">
+      <div id="leftSidebar">
+        <div class="sidebarElement"></div>
+      </div>
+      <div id="entry">
+        <div id="topRow">
+          <div id="titleBox">
+            <div id="title" contenteditable="true"></div>
+          </div>
+          <div id="buttonBox">
+            <div class="button" id="newNote">New Note</div>
+            <div class="button">Scan</div>
+            <div class="button">Study</div>
+          </div>
+        </div>
+        <div id="content" contenteditable="true"></div>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" 
+        integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" 
+        crossorigin="anonymous">
+    </script>
+
+    <script src="renderer.js"></script>
+
+    <script>
+      window.onbeforeunload = function () {
+        window.scrollTo(0, 0);
+      };
+    </script>
+  </body>
+</html>

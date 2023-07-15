@@ -1,0 +1,26 @@
+{
+  "name": "optimal_note",
+  "version": "1.0.0",
+  "description": "Note-taking application powered by generative AI",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sidsann/Optimal_Note.git"
+  },
+  "author": "Sid Sannapareddy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sidsann/Optimal_Note/issues"
+  },
+  "homepage": "https://github.com/sidsann/Optimal_Note#readme",
+  "devDependencies": {
+    "electron": "^25.3.0"
+  },
+  "dependencies": {
+    "sqlite3": "^5.1.6"
+  }
+}

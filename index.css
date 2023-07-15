@@ -1,0 +1,122 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html{
+    background-color:rgb(250, 250, 250);
+    font-family: 'Roboto', sans-serif;   
+    overflow-y: hidden;
+
+}
+
+#main {
+    display:flex;
+    flex-direction:row;
+    overflow-y: hidden;
+}
+
+#entry {
+    display:flex;
+    flex-direction:column;
+    justify-content: flex-start;
+    width:100%;
+}
+
+#leftSidebar {
+    display:flex;
+    flex-direction: column;
+    height:100vh;
+    width:20%;
+    background-color:rgb(236, 234, 234);
+    justify-content: flex-start;
+    align-items:center;
+    border-color:darkslategray(163, 162, 162);
+    border-style:solid;
+    border-width:1px;
+    border-top-width: 0;
+    border-bottom-width:0;
+}
+
+.sidebarElement {
+    width:90%;
+    height:10%;
+    background-color:rgb(250, 250, 250);
+    margin-top:8px;
+    border-color:darkslategray;
+    border-style: solid;
+    border-width: 1px;
+    border-radius:5%;
+}
+
+.sidebarElement:hover {
+    cursor:pointer;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    opacity:90%;
+}
+
+#topRow {
+    display:flex;
+    flex-direction:row;
+}
+
+#titleBox {
+    font-size:xx-large;
+    color:darkslategray;
+    padding-left:10px;
+    padding-top:30px;
+    display:inline-flex;
+    flex-direction:row;
+    justify-content: flex-start;
+    flex:3;
+}
+
+#title{
+    border-bottom-width:1.5px;
+    border-color:darkslategray;
+    border-bottom-style:solid;
+    width:40vw;
+    outline:none;
+}
+
+#buttonBox{
+    display:inline-flex;
+    flex-direction: row;
+    flex:1;
+    justify-content: flex-end;
+    align-items:flex-end;
+}
+
+.button {
+    border-style:solid;
+    background-color: darkslategray;
+    color:rgb(250, 250, 250);
+    width:50px;
+    height:40px;
+    flex:1;
+    max-width:80px;
+    margin-right: 1rem;
+    border-radius: 5%;
+    text-align:center;
+    line-height: 35px;
+}
+
+.button:hover {
+    cursor:pointer;
+    opacity: 90%;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+    outline:none;
+    border:none;
+}
+
+#content {
+    height:100vh;
+    outline:none;
+    padding-top:10px;
+    padding-left:10px;
+    padding-right:10px;
+    font-size:larger;
+    color:rgb(30, 55, 55);
+    line-height:25px;
+}
