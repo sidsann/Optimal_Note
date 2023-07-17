@@ -1,14 +1,12 @@
-const { contextBridge, ipcRenderer } = require('electron');
+const { contextBridge, ipcRenderer} = require('electron');
 
 contextBridge.exposeInMainWorld(
     'myAPI', { 
-        send: (channel, data) => {
-            // whitelist channels
-            let validChannels = ["create-note", "update-note"];
-            if (validChannels.includes(channel)) {
-                ipcRenderer.send(channel, data);
-            }
-        }
+        invokeNewNote: () => ipcRenderer.invoke('newNote'),
+        invokeSaveTitle: (titleContent) => ipcRenderer.invoke('saveTitle', titleContent),
+        invokeSaveContent: (mainContent) => ipcRenderer.invoke('saveContent', mainContent),
+        onAlertChangeTitle: (callback) => ipcRenderer.on('alert_changeTitle', callback),
+        onUpdateMainNote: (callback) => ipcRenderer.on('updateMainNote', callback),
     }
 );
 

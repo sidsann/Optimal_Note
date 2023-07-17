@@ -5,7 +5,7 @@
 }
 
 html{
-    background-color:rgb(250, 250, 250);
+    background-color:#F7F7FF;
     font-family: 'Roboto', sans-serif;   
     overflow-y: hidden;
 
@@ -29,10 +29,10 @@ html{
     flex-direction: column;
     height:100vh;
     width:20%;
-    background-color:rgb(236, 234, 234);
+    background-color:#AFB1C3;
     justify-content: flex-start;
     align-items:center;
-    border-color:darkslategray(163, 162, 162);
+    border-color:#2D334F;
     border-style:solid;
     border-width:1px;
     border-top-width: 0;
@@ -42,18 +42,12 @@ html{
 .sidebarElement {
     width:90%;
     height:10%;
-    background-color:rgb(250, 250, 250);
+    background-color:#F7F7FF;
     margin-top:8px;
-    border-color:darkslategray;
+    border-color:#2D334F;
     border-style: solid;
     border-width: 1px;
     border-radius:5%;
-}
-
-.sidebarElement:hover {
-    cursor:pointer;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-    opacity:90%;
 }
 
 #topRow {
@@ -62,8 +56,7 @@ html{
 }
 
 #titleBox {
-    font-size:xx-large;
-    color:darkslategray;
+    color:black;
     padding-left:10px;
     padding-top:30px;
     display:inline-flex;
@@ -73,11 +66,18 @@ html{
 }
 
 #title{
-    border-bottom-width:1.5px;
-    border-color:darkslategray;
-    border-bottom-style:solid;
     width:40vw;
     outline:none;
+    background-color:#F7F7FF;
+    border:none;
+    margin:0;
+    padding:0;
+    border-bottom-width:1.5px;
+    border-color:#2D334F;
+    border-bottom-style:solid;
+    font-size:xx-large;
+    resize:none;
+    font-family: 'Roboto', sans-serif;   
 }
 
 #buttonBox{
@@ -90,8 +90,8 @@ html{
 
 .button {
     border-style:solid;
-    background-color: darkslategray;
-    color:rgb(250, 250, 250);
+    background-color:#2D334F;
+    color:#F7F7FF;
     width:50px;
     height:40px;
     flex:1;
@@ -100,12 +100,6 @@ html{
     border-radius: 5%;
     text-align:center;
     line-height: 35px;
-}
-
-.button:hover {
-    cursor:pointer;
-    opacity: 90%;
-    box-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
     outline:none;
     border:none;
 }
@@ -117,6 +111,21 @@ html{
     padding-left:10px;
     padding-right:10px;
     font-size:larger;
-    color:rgb(30, 55, 55);
+    color:black;
+    border:none;
     line-height:25px;
+    font-family: 'Roboto', sans-serif;   
+    background-color: #F7F7FF;
+}
+.clickable {
+    transition:0.22s;
+    user-select:none;
+}
+.clickable:active {
+    transform:translateY(10%);
+}
+.clickable:hover {
+    cursor:pointer;
+    opacity: 95%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }

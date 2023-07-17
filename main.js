@@ -1,95 +1,141 @@
-const { ipcMain, app, BrowserWindow } = require("electron");
-const sqlite3 = require("sqlite3").verbose();
-const path = require('path');
+const { ipcMain, app, BrowserWindow, dialog } = require("electron");
+const path = require("path");
+const sqlite3 = require("sqlite3");
 
-
+let win; //BrowserWindow variable declared
 // Initialize a database object
 let db = new sqlite3.Database("myNotes.db", (err) => {
-  if (err) {
+  if (!err) {
+    console.log("Connected to the in-memory SQlite database.");
+  } else {
     console.error(err.message);
   }
-  console.log("Connected to the in-memory SQlite database.");
 });
+
 db.run(
   `CREATE TABLE IF NOT EXISTS notes(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title TEXT,
-    content TEXT,
-    last_accessed TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  title TEXT DEFAULT 'Title' PRIMARY KEY,
+  content TEXT DEFAULT 'content',
+  last_accessed TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )`,
   (err) => {
-    if (err) {
-      console.error(err.message); // prints the error message to the console
-    } else {
+    if (!err) {
       console.log("Table created successfully or already exists");
-      db.get('select count(*) as count from notes', function(err, row){
-        if (!err && row.count === 0) {
-          db.run(`INSERT INTO notes(title, content) VALUES(?,?)`, [`Title`, `content`], function(err){
-            if(err) {
-              console.error(err.message());
-            } else {
-              console.log(`A row has been inserted with rowid ${this.lastID}`);
-            }
-          });
-        } else if (err) {
-          console.error(err.message())
-        }
-      });
+      createNote();
+    } else {
+      console.error(err.message);
     }
   }
 );
-
-
-
-
-
-
 const createWindow = () => {
-  const win = new BrowserWindow({
+  win = new BrowserWindow({
     width: 800,
     height: 600,
     minWidth: 500,
     minHeight: 400,
+    //icon: `${__dirname}/assets/note.ico`,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
-    }
+      preload: `${__dirname}/preload.js`,
+      contextIsolation: true,
+    },
   });
 
   win.loadFile("index.html");
 };
 
-app.whenReady().then(() => {
-  createWindow();
-
-  app.on("activate", () => {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow();  
-
-  });
-});
-
-ipcMain.on("create-note", function() {
-  db.run(`INSERT INTO notes(title, content) VALUES(?, ?)`, ['Title', 'content'], function(err) {
-    if (err) {
-      return console.error(err.message);
-    } else {
-    console.log(`A row has been inserted with rowid ${this.lastID}`);
-    const note = {title: 'Title', content: 'content'};
-    mainWindow.webContents.send('update-note', note);
+app
+  .whenReady()
+  .then(() => {
+    if (process.platform === "darwin") {
+      // mac specific, set icon to note png
+      app.dock.setIcon(`${__dirname}/assets/note.png`);
     }
+    createWindow();
+  })
+  .then(() => {
+    
+    
+    win.webContents.on("did-finish-load", () => {
+      updateMainNote();
+    });
+
+    ipcMain.handle("newNote", () => {
+      createNote();
+      return null;
+    });
+    ipcMain.handle("saveTitle", (event, titleContent) => {
+      saveTitle(titleContent);
+      return null;
+    });
+    ipcMain.handle("saveContent", (event, mainContent) => {
+      saveContent(mainContent);
+      return null;
+    });
+    app.on("activate", () => {
+      if (BrowserWindow.getAllWindows().length === 0) createWindow();
+      win.webContents.on("did-finish-load", () => {
+        updateMainNote();
+      });   
+     });
   });
-});
-
-/*
-$('sidebarElement').on("contextmenu", (e) => {
-  e.preventDefault();
-
-})*/
-
-
-
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
 });
-console.log("Hello from Electron 👋");
 
+function createNote() {
+  db.run(`INSERT INTO notes DEFAULT VALUES`, function (err) {
+    if (!err) {
+      console.log(`A row has been inserted`);
+    } else {
+      if (err.message.includes("UNIQUE constraint failed")) {
+        win.webContents.send("alert_changeTitle");
+      } else {
+        console.error(err.message);
+      }
+    }
+  });
+}
+
+function saveTitle(titleContent) {
+  db.run(
+    `UPDATE notes SET title = ? WHERE last_accessed = (SELECT MAX(last_accessed) FROM notes)`,
+    [titleContent],
+    function (err) {
+      if (!err) {
+        console.log(
+          `Updated the most recently accessed note with the new title content: ${titleContent}`
+        );
+      } else {
+        console.error(err.message);
+      }
+    }
+  );
+}
+
+function updateMainNote() {
+  db.get(
+    `SELECT title, content FROM notes ORDER BY last_accessed DESC LIMIT 1`,
+    (err, row) => {
+      if (err) {
+        console.error(err.message);
+      } else {
+        console.log(row.title);
+        console.log(row.content);
+        win.webContents.send("updateMainNote", row.title, row.content);
+      }
+    }
+  );
+}
+
+function saveContent(mainContent) {
+  db.run(`UPDATE notes SET content = ? WHERE last_accessed = (SELECT MAX(last_accessed) FROM notes)`,
+  [mainContent],
+   (err) => {
+    if (err) {
+      console.error(err.message);
+    } else {
+      console.log(`content has been saved: ${mainContent}!`);
+    }
+  })
+}
