@@ -37,17 +37,32 @@ html{
     border-width:1px;
     border-top-width: 0;
     border-bottom-width:0;
+    overflow-y: auto;
+    padding-bottom:8px;
 }
 
 .sidebarElement {
     width:90%;
-    height:10%;
+    max-width:90%;
+    min-height:6%;
+    max-height:10%;
     background-color:#F7F7FF;
     margin-top:8px;
     border-color:#2D334F;
     border-style: solid;
     border-width: 1px;
     border-radius:5%;
+    display:flex;
+    align-items:center;
+    justify-content: center;
+    padding:6px;
+    font-size:large;
+}
+
+.sidebarElementText {
+    text-overflow:ellipsis;
+    overflow:hidden;
+    white-space: nowrap;
 }
 
 #topRow {
@@ -78,6 +93,7 @@ html{
     font-size:xx-large;
     resize:none;
     font-family: 'Roboto', sans-serif;   
+    max-width:40vw;
 }
 
 #buttonBox{
@@ -116,6 +132,7 @@ html{
     line-height:25px;
     font-family: 'Roboto', sans-serif;   
     background-color: #F7F7FF;
+    overflow-y: auto;
 }
 .clickable {
     transition:0.22s;

@@ -14,14 +14,20 @@ let db = new sqlite3.Database("myNotes.db", (err) => {
 
 db.run(
   `CREATE TABLE IF NOT EXISTS notes(
-  title TEXT DEFAULT 'Title' PRIMARY KEY,
-  content TEXT DEFAULT 'content',
+  title TEXT DEFAULT '' PRIMARY KEY,
+  content TEXT DEFAULT '',
   last_accessed TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )`,
   (err) => {
     if (!err) {
       console.log("Table created successfully or already exists");
-      createNote();
+      db.get(`SELECT COUNT(*) AS count FROM notes`, (err, row) => {
+        if (err) {
+          console.error(err.message);
+        } else if (row.count === 0) {
+          createNote();
+        }
+      });
     } else {
       console.error(err.message);
     }
@@ -53,10 +59,9 @@ app
     createWindow();
   })
   .then(() => {
-    
-    
     win.webContents.on("did-finish-load", () => {
       updateMainNote();
+      updateSidebar();
     });
 
     ipcMain.handle("newNote", () => {
@@ -71,12 +76,26 @@ app
       saveContent(mainContent);
       return null;
     });
+    ipcMain.handle("switchNote", (event, title) => {
+      db.run(
+        `UPDATE notes SET last_accessed = CURRENT_TIMESTAMP WHERE title = ?`,
+        [title],
+        (err) => {
+          if (err) {
+            console.error(err.message);
+          } else {
+            updateSidebar();
+            updateMainNote();
+          }
+        }
+      );
+    });
     app.on("activate", () => {
       if (BrowserWindow.getAllWindows().length === 0) createWindow();
       win.webContents.on("did-finish-load", () => {
         updateMainNote();
-      });   
-     });
+      });
+    });
   });
 
 app.on("window-all-closed", () => {
@@ -94,6 +113,8 @@ function createNote() {
         console.error(err.message);
       }
     }
+    updateSidebar();
+    updateMainNote();
   });
 }
 
@@ -129,13 +150,26 @@ function updateMainNote() {
 }
 
 function saveContent(mainContent) {
-  db.run(`UPDATE notes SET content = ? WHERE last_accessed = (SELECT MAX(last_accessed) FROM notes)`,
-  [mainContent],
-   (err) => {
+  db.run(
+    `UPDATE notes SET content = ? WHERE last_accessed = (SELECT MAX(last_accessed) FROM notes)`,
+    [mainContent],
+    (err) => {
+      if (err) {
+        console.error(err.message);
+      } else {
+        console.log(`content has been saved: ${mainContent}!`);
+      }
+    }
+  );
+}
+function updateSidebar() {
+  db.all(`SELECT title FROM notes ORDER BY last_accessed DESC`, (err, rows) => {
     if (err) {
       console.error(err.message);
     } else {
-      console.log(`content has been saved: ${mainContent}!`);
+      let allTitles = rows.map((row) => row.title);
+      win.webContents.send("updateSidebar", allTitles);
+      console.log("Got all the note titles from the database!");
     }
-  })
+  });
 }

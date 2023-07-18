@@ -8,9 +8,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
     title.addEventListener("keydown", (event) => {
         if(event.key === "Enter") {
-            //let titleContent = title.textContent;
             event.preventDefault();
-            //window.myAPI.saveTitle(titleContent);
             content.focus();
         }
     });
@@ -25,10 +23,29 @@ document.addEventListener('DOMContentLoaded', (event) => {
     window.myAPI.onAlertChangeTitle(() => {
         alert("Please ensure that each note has a unique title.");
     });
-    window.myAPI.onUpdateMainNote(function (event, noteTitle, noteContent) {
+    window.myAPI.onUpdateMainNote((event, noteTitle, noteContent) => {
         title.value = noteTitle;
         content.value = noteContent;
     });
+    window.myAPI.onUpdateSidebar((event, allTitles) => {
+        let sideBar = document.getElementById("leftSidebar");
+        sideBar.innerHTML = "";
+
+        allTitles.forEach((titleSidebar) => {
+            let div = document.createElement("div");
+            let span = document.createElement("span");
+            span.textContent = titleSidebar;
+            div.className = "clickable sidebarElement";
+            sideBar.appendChild(div);
+            div.appendChild(span);
+            span.className = "sidebarElementText";
+            div.addEventListener("click", ()=> {
+                let chosenTitle = div.firstChild.textContent;
+                window.myAPI.invokeSwitchNote(chosenTitle);
+            });
+        });
+    });
+
 });
 
 
