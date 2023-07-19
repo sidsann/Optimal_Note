@@ -22,6 +22,7 @@ html{
     flex-direction:column;
     justify-content: flex-start;
     width:100%;
+    height:100vh;
 }
 
 #leftSidebar {
@@ -68,6 +69,34 @@ html{
 #topRow {
     display:flex;
     flex-direction:row;
+}
+
+#topRow, #leftSidebar {
+    transition: transform 1s ease-in-out;
+}
+
+.offscreen-left{
+    transform:translateX(-100%);
+}
+.offscreen-up{
+    transform:translateY(-100%);
+}
+
+.zenMode {
+    position: absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+  }
+  
+.textFadeOut {
+    opacity:0;
+    transition: opacity 0.3s;
+}
+.textFadeIn {
+    opacity:100;
+    transition: opacity 0.3s;
 }
 
 #titleBox {
@@ -121,7 +150,8 @@ html{
 }
 
 #content {
-    height:100vh;
+    height:100%;
+    width:100%;
     outline:none;
     padding-top:10px;
     padding-left:10px;
@@ -133,6 +163,7 @@ html{
     font-family: 'Roboto', sans-serif;   
     background-color: #F7F7FF;
     overflow-y: auto;
+    resize:none;
 }
 .clickable {
     transition:0.22s;

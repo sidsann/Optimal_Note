@@ -173,3 +173,9 @@ function updateSidebar() {
     }
   });
 }
+/*
+function activateZenMode() {
+  //will push title div up and sidebar left till only the current note remains
+
+}*/
+

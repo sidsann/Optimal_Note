@@ -6,6 +6,27 @@ document.addEventListener('DOMContentLoaded', (event) => {
     document.getElementById("newNote").addEventListener("click", () => {
         window.myAPI.invokeNewNote();
     });
+    document.getElementById("zen").addEventListener("click", () => {
+        document.getElementById("topRow").classList.add("offscreen-up");
+        document.getElementById("leftSidebar").classList.add("offscreen-left");
+        content.classList.add("textFadeOut");
+        setTimeout(function(){
+            alert("Press esc to escape Zen Mode.");
+            content.classList.add("zenMode");
+            content.classList.remove("textFadeOut");
+        }, 1000);    
+    });
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+            document.getElementById("topRow").classList.remove("offscreen-up");
+            document.getElementById("leftSidebar").classList.remove("offscreen-left");
+            content.classList.add("textFadeOut");
+            setTimeout(function(){
+                content.classList.remove("zenMode");
+                content.classList.remove("textFadeOut");
+            }, 800);  
+        }
+    });
     title.addEventListener("keydown", (event) => {
         if(event.key === "Enter") {
             event.preventDefault();
