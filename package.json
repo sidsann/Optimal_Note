@@ -18,14 +18,14 @@
   },
   "homepage": "https://github.com/sidsann/Optimal_Note#readme",
   "devDependencies": {
-    "@types/jquery": "^3.5.16",
     "electron": "^25.3.0"
   },
   "dependencies": {
     "@electron/rebuild": "^3.2.13",
     "dotenv": "^16.3.1",
-    "jquery": "^3.7.0",
-    "langchain": "^0.0.111",
-    "sqlite3": "^5.1.6"
+    "langchain": "^0.0.113",
+    "openai": "^3.3.0",
+    "sqlite3": "^5.1.6",
+    "zod": "^3.21.4"
   }
 }
