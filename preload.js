@@ -7,10 +7,11 @@ contextBridge.exposeInMainWorld(
         invokeSaveTitle: (titleContent) => ipcRenderer.invoke('saveTitle', titleContent),
         invokeSaveContent: (mainContent) => ipcRenderer.invoke('saveContent', mainContent),
         invokeSwitchNote: (title) => ipcRenderer.invoke('switchNote', title),
-        invokeDialog_DeleteFlashcards: (options) => ipcRenderer.invoke('dialog_DeleteFlashcards', options),
+        invokeUpdateSidebar: () => ipcRenderer.invoke('updateSidebar'),
+        invokeDialog_Custom: (options) => ipcRenderer.invoke('dialog_Custom', options),
+        invokeGetFlashcards: () => ipcRenderer.invoke('getFlashcards'),
         onUpdateMainNote: (callback) => ipcRenderer.on('updateMainNote', callback),
         onUpdateSidebar: (callback) => ipcRenderer.on('updateSidebar', callback),
-        onFinishedScanning: (callback) => ipcRenderer.on('finishedScanning', callback),
     }
 );
 
